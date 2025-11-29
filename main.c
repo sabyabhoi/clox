@@ -1,7 +1,7 @@
 #include "chunk.h"
 #include "debug.h"
 
-int main(int argc, char *argv[]) {
+int main() {
   Chunk chunk;
 
   initChunk(&chunk);
