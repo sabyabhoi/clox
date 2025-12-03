@@ -1,6 +1,7 @@
 #include "vm.h"
 #include "debug.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 VM vm;
 
@@ -86,7 +87,8 @@ void push(Value value) {
 
 Value pop() {
   if (vm.stackTop == vm.stack) {
-    printf("Warning: trying to pop from empty stack");
+    printf("ERROR: trying to pop from empty stack\n");
+    exit(1);
   }
 
   vm.stackTop--;
