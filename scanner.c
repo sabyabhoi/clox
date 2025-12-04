@@ -88,7 +88,7 @@ static void skipWhitespace() {
   }
 }
 
-Token string() {
+static Token string() {
   while (peek() != '"' && !isAtEnd()) {
     if (peek() == '\n')
       scanner.line++;
@@ -104,7 +104,7 @@ Token string() {
 
 static bool isDigit(char c) { return '0' <= c && c <= '9'; }
 
-Token number() {
+static Token number() {
   while (isDigit(peek()))
     advance();
 
@@ -118,6 +118,18 @@ Token number() {
   return makeToken(TOKEN_NUMBER);
 }
 
+static bool isAlpha(char c) {
+  return ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || (c == '_');
+}
+
+static TokenType identifierType() { return TOKEN_IDENTIFIER; }
+
+static Token identifier() {
+  while (isAlpha(peek()) || isDigit(peek()))
+    advance();
+  return makeToken(identifierType());
+}
+
 Token scanToken() {
   skipWhitespace();
   scanner.start = scanner.current;
@@ -126,6 +138,8 @@ Token scanToken() {
     return makeToken(TOKEN_EOF);
 
   char c = advance();
+  if (isAlpha(c))
+    return identifier();
   if (isDigit(c))
     return number();
 
